@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "geprek-wani",
+  "private_key_id": "c700b4b8002f64bab99b95721fb4314c39f47d58",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCr8RlFWE/6tnEQ\nR47DcP1J9h+vSwJJAi+10pxVBRloz5Bh4gXvGl00yfJxIHdSy7AaRTMvZuELO9fb\nGpo8dWkJfxVX34udNYzdAT95R91vU/U8IF9Y9z3BzKiclZbk2OqalOcjOxaPxs2r\n1/MHVRlV0/jNj8p5R2DUBKtmxXN66RQrbUEwO0t55YI5AhKI154rcf4EUu/XCnNB\nujVObGbvgjeW6hsZpHP9fwePBqPHJj1PF+F9UQSpLeCGxrFrIG6eIduHtoySOLT8\nMyoGuX+qgGTte7jHR0zCmnFGbN0XkG5Q1/WbGkBAPkGjQsIHDvFqv5350EjBl6PU\ntsZuccK7AgMBAAECggEAA74XOTmvX/spoduU4W8rrDj1vpiI37Ly++euLHGUeIIQ\nF/lV/LrbrYL5ynmU71Hsrt2zvAPmwRpX2/aLxeYeV60S91svzEe2nbbhvU+Ro9M1\ngs4HlUWoa/f68ZGV+7w2+w9jqpImLxH6NxPXv+Cb0RDwmPTYyOQDWQoS+wUwOswf\nwyHpIxSc16FkEYYJ5okZ86yeuoNH7XtSareqK2T7MGgiwBQCWM47uPdrfVSsxeQe\n4v9dcePcOE6dPJpn96vygmeLbcM7ar19fA0FCiuHM2GSbFNZsooJZwM6gTz4pxxK\nofLYRZ61u18BGltQIDNUtYiXR1Hm9GvgfPa/W7FYfQKBgQDwPHKLdFSb9WwFbeL6\nlCzc5EiS8mb5kMS6Ndo5uVl7z9ZsFxqX3LKRHAUsp2ifM5ODVN7I9RDOhwdbtcWC\njg4M0B69nLH3nGlej6iEfwnC5kvxiN1yV0gvckE4QuYCYuhu4M4BzQ/VV/Gv5NP6\nEObDIXNtJQQ7eScj+Y3M9hbeVQKBgQC3OWyeZ95xvVJUVyvCVwLIUTLbel2pJjGk\nONCowDUAOvr/mBS1QEAgOGYfUueq7JrAmKQneKw6DS7yEZWseMTSn0DKl+Yhkn7P\nMX+X8l0HhyO00x3eAu60Uh6gNZm3m0XKGElxEwvhPzSGu2Whu+4NSjsWBJc9xNXp\nI1m62WgMzwKBgQCqUyEfMGZAgNuKaeNwp5e7MPsnfEd4D6T7JO1I2dnQx4WN8z9+\nhhHwgf5FL5gkr4uZpJWjwuScmO2lnxWev5rEiNYSt0MSfEnUqmPfNLa2AVO8tr3S\nsIFUalxFSGENNhT3b9l/O2VLbGPFwqZr+ImztUbCDmmWxQn0Hp3jwGJsVQKBgGNt\nehAL9Z5rSn4SP+DaLtxdk+eeY60i2NVxL2ojw584YnTJJpOlJidV87UT3DvY4bGa\nI5p31Z47ATrDaCGL9+MEILjP7UZSpRXymnbuQqWPJEVAO3j6xmZ8Gbp+28fTLvAY\ndeIyn8O/9NUYZHJ79RapLZ8pJpmSczJsyIio6dnpAoGBAN4wf2LWtP5sBz2g5rm1\nRL3Z4lP3+zjVgtOV7vhHXKwbhKi9QKbV5lBIISC+mWpX9spJ8rmtV5H34e4thahV\nyq0qwe/72KSsDi+8FAP772Auk1ezsnNFwIWlVvc4NzwZbkELcQ2j6S5l1ZoST7zd\n/YwTcN8jUPgCGbeHqCtlRtHY\n-----END PRIVATE KEY-----\n",
+  "client_email": "account1@geprek-wani.iam.gserviceaccount.com",
+  "client_id": "102828519358015464733",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/account1%40geprek-wani.iam.gserviceaccount.com"
+}
