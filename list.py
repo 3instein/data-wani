@@ -114,7 +114,8 @@ print('\n'.join(combined_prints))
 payload = {'message' : '\n'.join(combined_prints)}
 r = requests.post('https://notify-api.line.me/api/notify'
                 , headers={'Authorization' : 'Bearer {}'.format(token)}
-                , params = payload)
+                , params = payload,
+                notificationDisabled=True)
 
 
 # In[ ]:
