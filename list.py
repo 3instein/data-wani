@@ -1,50 +1,53 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[310]:
 
 
 import pandas as pd
 import gspread
+import requests
+
+token = 'AF5y90PW7vmJALond4SEGVBFwmt3Jhj7Ba7oclAeXL4'
 
 
-# In[3]:
+# In[311]:
 
 
 sa = gspread.service_account(filename='geprek-wani-c700b4b8002f.json')
 
 
-# In[4]:
+# In[312]:
 
 
 sheet = sa.open('Wani Spreadsheet')
 
 
-# In[5]:
+# In[313]:
 
 
 worksheet = sheet.worksheet('Pesanan')
 
 
-# In[33]:
+# In[314]:
 
 
 df = pd.DataFrame(worksheet.get_all_records())
 
 
-# In[34]:
+# In[315]:
 
 
 df.rename(columns={'Request cabe makanan utama': 'Cabe'}, inplace=True)
 
 
-# In[35]:
+# In[316]:
 
 
 df.head()
 
 
-# In[36]:
+# In[317]:
 
 
 # create a list containing 'Makanan Utama' and 'Nama'
@@ -56,7 +59,7 @@ df[list] = df[list].replace('', 1)
 df[list]
 
 
-# In[37]:
+# In[318]:
 
 
 # Custom geprek
@@ -64,7 +67,7 @@ df_geprek = df[df['Makanan Utama'].str.contains('Geprek')]
 df_geprek
 
 
-# In[38]:
+# In[319]:
 
 
 # Dataframe non-geprek
@@ -89,7 +92,7 @@ df_sambal = df[['Sambal', 'Nama']]
 df_sambal = df_sambal[df_sambal['Sambal'] != '']
 
 
-# In[41]:
+# In[320]:
 
 
 combined_prints = []
@@ -103,6 +106,15 @@ combined_prints.extend([f"{sum(df_minuman['Minuman'] == i)} {i} ({', '.join(df_m
 combined_prints.extend([f"{sum(df_sambal['Sambal'] == i)} {i} ({', '.join(df_sambal[df_sambal['Sambal'] == i]['Nama'])})" for i in df_sambal['Sambal'].unique()])
 
 print('\n'.join(combined_prints))
+
+
+# In[321]:
+
+
+payload = {'message' : '\n'.join(combined_prints)}
+r = requests.post('https://notify-api.line.me/api/notify'
+                , headers={'Authorization' : 'Bearer {}'.format(token)}
+                , params = payload)
 
 
 # In[ ]:
