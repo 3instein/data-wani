@@ -27,13 +27,16 @@ def callback():
 
     sheet = sa.open('Wani Spreadsheet')
 
-    worksheet = sheet.worksheet('Pesanan')
 
+    database = sheet.worksheet('Database Harga')
+    
+    df_harga = pd.DataFrame(database.get_all_records())
+
+    worksheet = sheet.worksheet('Pesanan')
+    
     df = pd.DataFrame(worksheet.get_all_records())
 
-    df.rename(columns={'Request cabe GEPREK': 'Cabe'}, inplace=True)
-
-    df.head()
+    df.rename(columns={'Request cabe GEPREK dan cabe TERIYAKI': 'Cabe', 'Sambal (+ 2.000)': 'Sambal'}, inplace=True)
 
     # create a list containing 'Makanan Utama' and 'Nama'
     list = ['Makanan Utama', 'Cabe', 'Nama']
@@ -44,20 +47,24 @@ def callback():
     df[list]
 
     # Custom geprek
-    df_geprek = df[df['Makanan Utama'].str.contains('Geprek') & ~df['Makanan Utama'].str.contains('Indomie')]
+    df_geprek = df[df['Makanan Utama'].str.contains('Geprek', case=False) & ~df['Makanan Utama'].str.contains('Indomie') & ~df['Makanan Utama'].str.contains('Udang')]
     df_geprek
 
-    # Dataframe non-geprek
-    df_not_geprek = df[~df['Makanan Utama'].str.contains('Geprek')]
+    # Dataframe not-geprek but include 'Indomie' and 'Udang'
+
+    df_not_geprek = df[~df['Makanan Utama'].str.contains('geprek', case=False)]
 
     # Dataframe geprek tanpa nasi
-    df_geprek_tanpa_nasi = df_geprek[df_geprek['Makanan Utama'].str.contains('tanpa nasi')]
+    df_geprek_tanpa_nasi = df_geprek[df_geprek['Makanan Utama'].str.contains('tanpa Nasi')]
 
     # Dataframe geprek dengan nasi
-    df_geprek_dengan_nasi = df_geprek[~df_geprek['Makanan Utama'].str.contains('tanpa nasi')]
+    df_geprek_dengan_nasi = df_geprek[~df_geprek['Makanan Utama'].str.contains('tanpa Nasi')]
 
     # Dataframe indomie geprek
     df_indomie_geprek = df[df['Makanan Utama'].str.contains('Indomie') & df['Makanan Utama'].str.contains('Geprek')]
+
+    # Dataframe udang geprek
+    df_udang_geprek = df[df['Makanan Utama'].str.contains('Udang') & df['Makanan Utama'].str.contains('Geprek')]
 
     # Dataframe camilan
     df_camilan = df[['Camilan', 'Nama']]
@@ -78,21 +85,13 @@ def callback():
     combined_prints.extend([f"{sum(df_geprek_tanpa_nasi['Cabe'] == i)} Ayam Geprek tanpa nasi Cabe {i} ({', '.join(df_geprek_tanpa_nasi[df_geprek_tanpa_nasi['Cabe'] == i]['Nama'])})" for i in df_geprek_tanpa_nasi['Cabe'].unique()])
     combined_prints.extend([f"{sum(df_not_geprek['Makanan Utama'] == i)} {i} ({', '.join(df_not_geprek[df_not_geprek['Makanan Utama'] == i]['Nama'])})" for i in df_not_geprek['Makanan Utama'].unique()])
     combined_prints.extend([f"{sum(df_indomie_geprek['Cabe'] == i)} {df_indomie_geprek[df_indomie_geprek['Cabe'] == i]['Makanan Utama'].iloc[0]} Cabe {i} ({', '.join(df_indomie_geprek[df_indomie_geprek['Cabe'] == i]['Nama'])})" for i in df_indomie_geprek['Cabe'].unique()])
+    combined_prints.extend([f"{sum(df_udang_geprek['Cabe'] == i)} {df_udang_geprek[df_udang_geprek['Cabe'] == i]['Makanan Utama'].iloc[0]} Cabe {i} ({', '.join(df_udang_geprek[df_udang_geprek['Cabe'] == i]['Nama'])})" for i in df_udang_geprek['Cabe'].unique()])
     combined_prints.extend([f"{sum(df_camilan['Camilan'] == i)} {i} ({', '.join(df_camilan[df_camilan['Camilan'] == i]['Nama'])})" for i in df_camilan['Camilan'].unique()])
     combined_prints.extend([f"{sum(df_minuman['Minuman'] == i)} {i} ({', '.join(df_minuman[df_minuman['Minuman'] == i]['Nama'])})" for i in df_minuman['Minuman'].unique()])
     combined_prints.extend([f"{sum(df_sambal['Sambal'] == i)} {i} ({', '.join(df_sambal[df_sambal['Sambal'] == i]['Nama'])})" for i in df_sambal['Sambal'].unique()])
 
     print('\n'.join(combined_prints))
 
-    # remove all text after '(' in combined_prints
-    # combined_prints = [i.split('(')[0] for i in combined_prints]
-
-    # print('\n'.join(combined_prints))
-
-    # payload = {'message' : '\n'.join(combined_prints)}
-    # r = requests.post('https://notify-api.line.me/api/notify'
-    #                 , headers={'Authorization' : 'Bearer {}'.format(token)}
-    #                 , params = payload)
     
     return 'Success'
 
