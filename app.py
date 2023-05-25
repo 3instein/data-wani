@@ -114,7 +114,7 @@ def callback():
     #                 , params = payload)
 
     
-    return 'Success'
+    return combined_prints
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
