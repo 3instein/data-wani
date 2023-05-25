@@ -23,26 +23,34 @@ handler = WebhookHandler('cb15d13e97326a3349cb158e03846af1')
 def callback():
     token = 'AF5y90PW7vmJALond4SEGVBFwmt3Jhj7Ba7oclAeXL4'
 
-    sa = gspread.service_account(filename='geprek-wani-c700b4b8002f.json')
+    sa = gspread.service_account(filename='geprek-wani-abcd00886732.json')
 
     sheet = sa.open('Wani Spreadsheet')
 
-
     database = sheet.worksheet('Database Harga')
-    
+
     df_harga = pd.DataFrame(database.get_all_records())
 
     worksheet = sheet.worksheet('Pesanan')
-    
+
     df = pd.DataFrame(worksheet.get_all_records())
 
-    df.rename(columns={'Request cabe GEPREK dan cabe TERIYAKI': 'Cabe', 'Sambal (+ 2.000)': 'Sambal'}, inplace=True)
+    df.rename(columns={'Request cabe GEPREK atau cabe TERIYAKI': 'Cabe', 
+                    'Sambal Tambahan (Rp 2.000,-)': 'Sambal',
+                    'Camilan (Rp 10.000,-)': 'Camilan',
+                    }, inplace=True)
+
+    df.head()
 
     # create a list containing 'Makanan Utama' and 'Nama'
     list = ['Makanan Utama', 'Cabe', 'Nama']
 
-    # replace the empty string with 1
-    df[list] = df[list].replace('', 1)
+    # replace the empty string with 1 if Makanan Utama is not empty
+    df['Cabe'] = df['Cabe'].apply(lambda x: 1 if x == '' else x)
+
+    # remove everything after ' ~' in Makanan Utama
+    df['Makanan Utama'] = df['Makanan Utama'].apply(lambda x: x.split(' ~')[0])
+    df['Minuman'] = df['Minuman'].apply(lambda x: x.split(' ~')[0])
 
     df[list]
 
@@ -53,6 +61,9 @@ def callback():
     # Dataframe not-geprek but include 'Indomie' and 'Udang'
 
     df_not_geprek = df[~df['Makanan Utama'].str.contains('geprek', case=False)]
+
+    # drop rows with empty Makanan Utama
+    df_not_geprek = df_not_geprek[df_not_geprek['Makanan Utama'] != '']
 
     # Dataframe geprek tanpa nasi
     df_geprek_tanpa_nasi = df_geprek[df_geprek['Makanan Utama'].str.contains('tanpa Nasi')]
@@ -91,6 +102,16 @@ def callback():
     combined_prints.extend([f"{sum(df_sambal['Sambal'] == i)} {i} ({', '.join(df_sambal[df_sambal['Sambal'] == i]['Nama'])})" for i in df_sambal['Sambal'].unique()])
 
     print('\n'.join(combined_prints))
+
+    # remove all text after '(' in combined_prints
+    # combined_prints = [i.split('(')[0] for i in combined_prints]
+
+    # print('\n'.join(combined_prints))
+
+    # payload = {'message' : '\n'.join(combined_prints)}
+    # r = requests.post('https://notify-api.line.me/api/notify'
+    #                 , headers={'Authorization' : 'Bearer {}'.format(token)}
+    #                 , params = payload)
 
     
     return 'Success'

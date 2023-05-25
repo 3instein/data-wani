@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[248]:
 
 
 import pandas as pd
@@ -11,67 +11,74 @@ import requests
 token = 'AF5y90PW7vmJALond4SEGVBFwmt3Jhj7Ba7oclAeXL4'
 
 
-# In[2]:
+# In[249]:
 
 
-sa = gspread.service_account(filename='geprek-wani-c700b4b8002f.json')
+sa = gspread.service_account(filename='geprek-wani-abcd00886732.json')
 
 
-# In[3]:
+# In[250]:
 
 
 sheet = sa.open('Wani Spreadsheet')
 
 
-# In[4]:
+# In[251]:
 
 
 database = sheet.worksheet('Database Harga')
 
 
-# In[5]:
+# In[252]:
 
 
 df_harga = pd.DataFrame(database.get_all_records())
 
 
-# In[6]:
+# In[253]:
 
 
 worksheet = sheet.worksheet('Pesanan')
 
 
-# In[7]:
+# In[254]:
 
 
 df = pd.DataFrame(worksheet.get_all_records())
 
 
-# In[8]:
+# In[255]:
 
 
-df.rename(columns={'Request cabe GEPREK': 'Cabe', 'Sambal (+ 2.000)': 'Sambal'}, inplace=True)
+df.rename(columns={'Request cabe GEPREK atau cabe TERIYAKI': 'Cabe', 
+                   'Sambal Tambahan (Rp 2.000,-)': 'Sambal',
+                   'Camilan (Rp 10.000,-)': 'Camilan',
+                   }, inplace=True)
 
 
-# In[9]:
+# In[256]:
 
 
 df.head()
 
 
-# In[10]:
+# In[257]:
 
 
 # create a list containing 'Makanan Utama' and 'Nama'
 list = ['Makanan Utama', 'Cabe', 'Nama']
 
-# replace the empty string with 1
-df[list] = df[list].replace('', 1)
+# replace the empty string with 1 if Makanan Utama is not empty
+df['Cabe'] = df['Cabe'].apply(lambda x: 1 if x == '' else x)
+
+# remove everything after ' ~' in Makanan Utama
+df['Makanan Utama'] = df['Makanan Utama'].apply(lambda x: x.split(' ~')[0])
+df['Minuman'] = df['Minuman'].apply(lambda x: x.split(' ~')[0])
 
 df[list]
 
 
-# In[11]:
+# In[258]:
 
 
 # Custom geprek
@@ -79,18 +86,21 @@ df_geprek = df[df['Makanan Utama'].str.contains('Geprek', case=False) & ~df['Mak
 df_geprek
 
 
-# In[12]:
+# In[259]:
 
 
 # Dataframe not-geprek but include 'Indomie' and 'Udang'
 
 df_not_geprek = df[~df['Makanan Utama'].str.contains('geprek', case=False)]
 
+# drop rows with empty Makanan Utama
+df_not_geprek = df_not_geprek[df_not_geprek['Makanan Utama'] != '']
+
 # Dataframe geprek tanpa nasi
-df_geprek_tanpa_nasi = df_geprek[df_geprek['Makanan Utama'].str.contains('tanpa nasi')]
+df_geprek_tanpa_nasi = df_geprek[df_geprek['Makanan Utama'].str.contains('tanpa Nasi')]
 
 # Dataframe geprek dengan nasi
-df_geprek_dengan_nasi = df_geprek[~df_geprek['Makanan Utama'].str.contains('tanpa nasi')]
+df_geprek_dengan_nasi = df_geprek[~df_geprek['Makanan Utama'].str.contains('tanpa Nasi')]
 
 # Dataframe indomie geprek
 df_indomie_geprek = df[df['Makanan Utama'].str.contains('Indomie') & df['Makanan Utama'].str.contains('Geprek')]
@@ -111,7 +121,7 @@ df_sambal = df[['Sambal', 'Nama']]
 df_sambal = df_sambal[df_sambal['Sambal'] != '']
 
 
-# In[13]:
+# In[260]:
 
 
 combined_prints = []
@@ -129,7 +139,7 @@ combined_prints.extend([f"{sum(df_sambal['Sambal'] == i)} {i} ({', '.join(df_sam
 print('\n'.join(combined_prints))
 
 
-# In[14]:
+# In[261]:
 
 
 # remove all text after '(' in combined_prints
@@ -138,16 +148,16 @@ print('\n'.join(combined_prints))
 # print('\n'.join(combined_prints))
 
 
-# In[15]:
+# In[262]:
 
 
-payload = {'message' : '\n'.join(combined_prints)}
-r = requests.post('https://notify-api.line.me/api/notify'
-                , headers={'Authorization' : 'Bearer {}'.format(token)}
-                , params = payload)
+# payload = {'message' : '\n'.join(combined_prints)}
+# r = requests.post('https://notify-api.line.me/api/notify'
+#                 , headers={'Authorization' : 'Bearer {}'.format(token)}
+#                 , params = payload)
 
 
-# In[8]:
+# In[263]:
 
 
 # duar
@@ -158,7 +168,7 @@ r = requests.post('https://notify-api.line.me/api/notify'
 #                 , params = payload, files=files)
 
 
-# In[7]:
+# In[264]:
 
 
 # ambatukam
