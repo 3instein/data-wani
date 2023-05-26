@@ -22,16 +22,16 @@ handler = WebhookHandler('cb15d13e97326a3349cb158e03846af1')
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
-    signature = request.headers['x-line-signature']
+    print(request.headers)
 
-    body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
+    # body = request.get_data(as_text=True)
+    # app.logger.info("Request body: " + body)
 
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        abort(400)
-    return 'OK'
+    # try:
+    #     handler.handle(body, signature)
+    # except InvalidSignatureError:
+    #     abort(400)
+    # return 'OK'
 
     # token = 'AF5y90PW7vmJALond4SEGVBFwmt3Jhj7Ba7oclAeXL4'
 
