@@ -62,6 +62,10 @@ def callback():
 
     df_not_geprek = df[~df['Makanan Utama'].str.contains('geprek', case=False)]
 
+    # drop rows that contains 'Teriyaki'
+
+    df_not_geprek = df_not_geprek[~df_not_geprek['Makanan Utama'].str.contains('Teriyaki')]
+
     # drop rows with empty Makanan Utama
     df_not_geprek = df_not_geprek[df_not_geprek['Makanan Utama'] != '']
 
@@ -89,10 +93,14 @@ def callback():
     df_sambal = df[['Sambal', 'Nama']]
     df_sambal = df_sambal[df_sambal['Sambal'] != '']
 
+    # Dataframe teriyaki
+    df_teriyaki = df[df['Makanan Utama'].str.contains('Teriyaki')]
+
     combined_prints = []
     combined_prints.append(f"Pesanan Depot Wani: {pd.Timestamp.now()}")
     combined_prints.append("=====================================")
     combined_prints.extend([f"{sum(df_geprek_dengan_nasi['Cabe'] == i)} Nasi Ayam Geprek Cabe {i} ({', '.join(df_geprek_dengan_nasi[df_geprek_dengan_nasi['Cabe'] == i]['Nama'])})" for i in df_geprek_dengan_nasi['Cabe'].unique()])
+    combined_prints.extend([f"{sum(df_teriyaki['Cabe'] == i)} Nasi Ayam Teriyaki Cabe {i} ({', '.join(df_teriyaki[df_teriyaki['Cabe'] == i]['Nama'])})" for i in df_teriyaki['Cabe'].unique()])
     combined_prints.extend([f"{sum(df_geprek_tanpa_nasi['Cabe'] == i)} Ayam Geprek tanpa nasi Cabe {i} ({', '.join(df_geprek_tanpa_nasi[df_geprek_tanpa_nasi['Cabe'] == i]['Nama'])})" for i in df_geprek_tanpa_nasi['Cabe'].unique()])
     combined_prints.extend([f"{sum(df_not_geprek['Makanan Utama'] == i)} {i} ({', '.join(df_not_geprek[df_not_geprek['Makanan Utama'] == i]['Nama'])})" for i in df_not_geprek['Makanan Utama'].unique()])
     combined_prints.extend([f"{sum(df_indomie_geprek['Cabe'] == i)} {df_indomie_geprek[df_indomie_geprek['Cabe'] == i]['Makanan Utama'].iloc[0]} Cabe {i} ({', '.join(df_indomie_geprek[df_indomie_geprek['Cabe'] == i]['Nama'])})" for i in df_indomie_geprek['Cabe'].unique()])
