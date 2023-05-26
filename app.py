@@ -117,7 +117,7 @@ def callback():
     # return combined_prints
 
     # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
+    # signature = request.headers['X-Line-Signature']
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
