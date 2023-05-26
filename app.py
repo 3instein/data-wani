@@ -21,6 +21,18 @@ handler = WebhookHandler('cb15d13e97326a3349cb158e03846af1')
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
+    # get X-Line-Signature header value
+    signature = request.headers['X-Line-Signature']
+
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    return 'OK'
+
     # token = 'AF5y90PW7vmJALond4SEGVBFwmt3Jhj7Ba7oclAeXL4'
 
     # sa = gspread.service_account(filename='geprek-wani-abcd00886732.json')
@@ -124,16 +136,17 @@ def callback():
     
     # return combined_prints
      # get X-Line-Signature header value
-    signature = request.headers['X-Line-Signature']
-    # get request body as text
-    body = request.get_data(as_text=True)
-    app.logger.info("Request body: " + body)
-    # handle webhook body
-    try:
-        handler.handle(body, signature)
-    except InvalidSignatureError:
-        abort(400)
-    return 'OK'
+    # signature = request.headers['X-Line-Signature']
+
+    # # get request body as text
+    # body = request.get_data(as_text=True)
+    # app.logger.info("Request body: " + body)
+    # # handle webhook body
+    # try:
+    #     handler.handle(body, signature)
+    # except InvalidSignatureError:
+    #     abort(400)
+    # return 'OK'
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
